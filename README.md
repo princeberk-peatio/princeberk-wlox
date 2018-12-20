@@ -123,14 +123,15 @@ Proceed to wlox's admin panel that should be working on wlox.princeberk.com/wlox
 
 PHP Configuration
 --------------
-Your php.ini should have the following settings: short_open_tag = On It should also have the following modules: 
-curl;
-gd;
-mcrypt;
-json;
-mysql;
-openssl;
-pcre;
+Your php.ini should have the following settings: short_open_tag = On
+It should also have the following modules: 
+curl;  
+gd;  
+mcrypt;  
+json;  
+mysql;  
+openssl;  
+pcre;  
 
 ```
 sudo apt-get install php5.6-_package_name_
