@@ -1,5 +1,9 @@
 This repo is copied from https://github.com/wlox/wlox
 
+WLOX is an open source cryptocurrency exchange that supports multiple fiat currencies.
+
+At this point, the exchange only supports one cryptocurrency at a time. We plan to adapt the project to a multiple-crypto-currency environment soon.
+
 Clone the WLOX repository:
 ```
 sudo git clone --recursive https://github.com/princeberk-wlox/princeberk-wlox.git
