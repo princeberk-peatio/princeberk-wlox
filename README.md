@@ -1,13 +1,21 @@
+WLOX - Open Source Cryptocurrency Exchange  
+=========
 This project is forked by Princeberk Ltd. Originally sourced from https://github.com/wlox/wlox
 
 WLOX is an open source cryptocurrency exchange that supports multiple fiat currencies.
 
 At this point, the exchange only supports Bitcoin. We plan to adapt the project to a multiple-crypto-currency environment soon.
 
-Clone the WLOX repository:
-```
-sudo git clone --recursive https://github.com/princeberk-wlox/princeberk-wlox.git
-```
+Getting Started
+--------------
+WLOX runs on the traditional PHP/MySQL/Apache setup.
+
+**For a development environment**, you can simply clone the whole set of WLOX repositories by doing `git clone --recursive https://github.com/princeberk-wlox/princeberk-wlox.git`.
+
+**For a production environment**, it is strongly recommended to distribute the different repositories across multiple servers.
+
+Database Setup
+--------------
 
 Create a new MySql database:
 
@@ -27,9 +35,10 @@ Then import it into the newly created database:
 mysql -u root -p wlox2 < wlox.sql
 ```
 
-After successfully importing the sql file you need to run all of the updates using the same methond! NOTE: Even if some of the updates give errors don't panic that's the way it should be!
+After successfully importing the sql file you need to run all of the updates using the same methond! NOTE: Even if some of the updates give errors don't skip them!
 
-###### Setting up the Back-End (backstage2)
+Setting up the Back-End (backstage2)
+--------------
 
 Inside the backstage2 directory, rename the file cfg.php.example to cfg.php
 
@@ -37,19 +46,49 @@ Inside the backstage2 directory, rename the file cfg.php.example to cfg.php
 mv cfg.php.example cfg.php
 ```
 
-and define the following variables: $CFG->dbhost: The address of the database server. $CFG->dbname: The database name. $CFG->dbuser: The database username. $CFG->dbpass: The password for the database. You can now log in using user/password admin/admin. You should obviously remove this user in a production setup.
+and define the following variables:
+```
+$CFG->dbhost: The address of the database server. 
+$CFG->dbname: The database name.
+$CFG->dbuser: The database username.
+$CFG->dbpass: The password for the database.
+```
 
-###### Setting up the API Server
+You can now log in using user/password admin/admin. You should obviously remove this user in a production setup.
 
-Rename cfg/cfg.php.example to cfg/cfg.php inside the api folder and set: $CFG->dbhost: The IP or host name of your database server. $CFG->dname: The name of the database on that server $CFG->dbuser: The database user. $CFG->dbpass: The database user's password.
+Setting up the API Server
+--------------
 
-###### Setting up the Auth Server
+Rename cfg/cfg.php.example to cfg/cfg.php inside the api folder and set:
+```
+$CFG->dbhost: The IP or host name of your database server.
+$CFG->dname: The name of the database on that server.
+$CFG->dbuser: The database user.
+$CFG->dbpass: The database user's password.
+```
 
-Rename cfg.php.example to cfg.php inside the auth folder and set: $CFG->dbhost: The IP or host name of your database server. $CFG->dname: The name of the database on that server $CFG->dbuser: The database user. $CFG->dbpass: The database user's password.
+Setting up the Auth Server
+--------------
 
-###### Setting up Cron Jobs
+Rename cfg.php.example to cfg.php inside the auth folder and set:
+```
+$CFG->dbhost: The IP or host name of your database server.
+$CFG->dname: The name of the database on that server.
+$CFG->dbuser: The database user.
+$CFG->dbpass: The database user's password.
+```
 
-IMPORTANT: Should run on the same server as bitcoind daemon! When this is ready, rename cfg.php.example to cfg.php and set: $CFG->dbhost: The IP or host name of your database server. $CFG->dname: The name of the database on that server $CFG->dbuser: The database user. $CFG->dbpass: The database user's password. The next step is to set the right permissions so that these files can be run as cron jobs. This includes setting up the appropriate permissions for the /transactions directory so that the provided receive.sh file can create files in there. When that is ready, we need to set up each file to be run by the server's cron tab.
+Setting up Cron Jobs
+--------------
+
+IMPORTANT: Should run on the same server as bitcoind daemon! When this is ready, rename cfg.php.example to cfg.php and set: 
+```
+$CFG->dbhost: The IP or host name of your database server.
+$CFG->dname: The name of the database on that server.
+$CFG->dbuser: The database user.
+$CFG->dbpass: The database user's password.
+```
+The next step is to set the right permissions so that these files can be run as cron jobs. This includes setting up the appropriate permissions for the /transactions directory so that the provided receive.sh file can create files in there. When that is ready, we need to set up each file to be run by the server's cron tab.
 
 ```
 0 0 * * * /usr/bin/php /home/pb_admin/wlox-cron/daily_stats.php > /dev/null 2>&1
@@ -63,8 +102,8 @@ IMPORTANT: Should run on the same server as bitcoind daemon! When this is ready,
 * * * * * /usr/bin/php /home/pb_admin/wlox-cron/process_bitcoin.sh  > /dev/null 2>&1
 ```
 
-###### Setting up the Frontend
-
+Setting up the Frontend
+--------------
 The /htdocs folder provided in the package is intended to be the server's web directory. When this is ready, rename cfg.php.example to cfg.php and set: 
 ```
 $CFG->api_url = 'http://your.api.server/api.php';
@@ -72,18 +111,18 @@ $CFG->auth_login_url = 'http://your.api.server/login.php';
 $CFG->auth_verify_token_url = 'http://your.api.server/verify_token.php';
 ```
 
-###### Configuring WLOX
-
-If WLOX is placed on a development server that is being accessed via ip address, it will cause a problem with sessions. To fix that edit your hosts file and add a new line at the end:
+Configuring WLOX
+--------------
+If WLOX is placed on a development server that is being accessed via ip address, it will cause a problem with sessions. To fix that edit your hosts file and add a new line at the end (example IP):
 
 ```
-10.10.10.117    wlox.princeberk.com
+10.10.10.10    wlox.princeberk.com
 ```
 
 Proceed to wlox's admin panel that should be working on wlox.princeberk.com/wlox/backstage2\. Navigate to Status >> App Configuration. In the "Frontend Config" section fill in the two fields with the appropriate information. In our case: Base URL: http://wlox.princeberk.com/wlox/frontend/htdocs/ Dir Root: /var/www/html/wlox/frontend/htdocs/ In order to be able to register new users, a smtp server is required. On the same page there is a section called "Email Settings", fill it in with your smtp server information.
 
-###### PHP Configuration
-
+PHP Configuration
+--------------
 Your php.ini should have the following settings: short_open_tag = On It should also have the following modules: 
 curl;
 gd;
